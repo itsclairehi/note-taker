@@ -15,7 +15,15 @@ app.use(express.json());
 //makes public folder available to pull from- css, js, images etc.
 app.use(express.static('public'));
 
+function addNote(note, notesArray) {
 
+notesArray.push(note)
+fs.writeFileSync(
+    path.join(__dirname, './db/db.json'),
+    JSON.stringify(notes, null, 2)
+  );
+  return note;
+}
 
 app.get('/notes', (req, res)=> {
     res.sendFile(path.join(__dirname, './public/notes.html'));
@@ -30,6 +38,13 @@ app.get('/notes', (req, res)=> {
    return res.json(notes)
   })
 
+  app.post('/api/notes', (req, res)=> {
+      
+    newNote = req.body
+    addNote(newNote, notes)
+
+    res.json(newNote)
+   })
 
 app.listen(PORT, () => {
     console.log(`API server now on port ${PORT}!`);
