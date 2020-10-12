@@ -15,6 +15,7 @@ app.use(express.json());
 //makes public folder available to pull from- css, js, images etc.
 app.use(express.static('public'));
 
+//adds new note to db.json file (list of all notes)
 function addNote(note, notesArray) {
 
 notesArray.push(note)
@@ -41,6 +42,7 @@ app.get('/notes', (req, res)=> {
   app.post('/api/notes', (req, res)=> {
       
     newNote = req.body
+    newNote.id = uuidV4()
     addNote(newNote, notes)
 
     res.json(newNote)
