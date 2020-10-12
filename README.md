@@ -4,7 +4,6 @@
 
   ## Table of Contents
 
-  * [Installation](#installation)
   * [Technologies](#technologies)
   * [Link](#link)
   * [License](#license)
