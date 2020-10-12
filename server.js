@@ -31,9 +31,9 @@ app.get('/notes', (req, res)=> {
     res.sendFile(path.join(__dirname, './public/notes.html'));
   })
 
-  app.get('*', (req, res)=> {
-    res.sendFile(path.join(__dirname, './public/index.html'));
-  })
+  // app.get('*', (req, res)=> {
+  //   res.sendFile(path.join(__dirname, './public/index.html'));
+  // })
 
   app.get('/api/notes', (req, res)=> {
     
@@ -51,14 +51,21 @@ app.get('/notes', (req, res)=> {
    })
 
    app.delete('/api/notes/:id', (req, res) => {
-     console.log(req.body);
+     
      for(i=0; i<notes.length; i++) {
        var current = notes[i]
-       if (current.id === req.body.id ) {
+       if (current.id === req.params.id ) {
          notes.splice([i], 1);
        }
       }
+
+      fs.writeFileSync(
+        path.join(__dirname, './db/db.json'),
+        JSON.stringify(notes, null, 2)
+      )
+      
       res.json(notes)
+     
    })
 
 app.listen(PORT, () => {
