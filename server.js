@@ -18,7 +18,7 @@ app.use(express.static('public'));
 //adds new note to db.json file (list of all notes)
 function addNote(note, notesArray) {
 
-notesArray.push(note)
+  notesArray.push(note)
 fs.writeFileSync(
     path.join(__dirname, './db/db.json'),
     JSON.stringify(notes, null, 2)
@@ -26,19 +26,21 @@ fs.writeFileSync(
   return note;
 }
 
+//routes
 app.get('/notes', (req, res)=> {
     res.sendFile(path.join(__dirname, './public/notes.html'));
   })
 
-//   app.get('*', (req, res)=> {
-//     res.sendFile(path.join(__dirname, './public/index.html'));
-//   })
+  app.get('*', (req, res)=> {
+    res.sendFile(path.join(__dirname, './public/index.html'));
+  })
 
   app.get('/api/notes', (req, res)=> {
     
    return res.json(notes)
   })
 
+  //stores new note
   app.post('/api/notes', (req, res)=> {
       
     newNote = req.body
@@ -46,6 +48,17 @@ app.get('/notes', (req, res)=> {
     addNote(newNote, notes)
 
     res.json(newNote)
+   })
+
+   app.delete('/api/notes/:id', (req, res) => {
+     console.log(req.body);
+     for(i=0; i<notes.length; i++) {
+       var current = notes[i]
+       if (current.id === req.body.id ) {
+         notes.splice([i], 1);
+       }
+      }
+      res.json(notes)
    })
 
 app.listen(PORT, () => {
